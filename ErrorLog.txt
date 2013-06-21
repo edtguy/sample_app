@@ -1,0 +1,124 @@
+C:\Sites\rails_projects\sample_app>bundle exec rspec spec/ --no-color
+....................................FF
+
+Failures:
+
+  1) profile page
+     Failure/Error: it {should have_selector('h1', text: user.name) }
+       expected css "h1" with text "Michael Hartl" to return something
+     # ./spec/requests/user_pages_spec.rb:17:in `block (2 levels) in <top (required)>'
+
+  2) profile page
+     Failure/Error: it {should have_selector('title', text: user.name) }
+       expected css "title" with text "Michael Hartl" to return something
+     # ./spec/requests/user_pages_spec.rb:18:in `block (2 levels) in <top (required)>'
+
+Finished in 2.8 seconds
+38 examples, 2 failures
+
+Failed examples:
+
+rspec ./spec/requests/user_pages_spec.rb:17 # profile page
+rspec ./spec/requests/user_pages_spec.rb:18 # profile page
+
+Randomized with seed 33973
+
+
+C:\Sites\rails_projects\sample_app>rails c test
+Loading test environment (Rails 3.2.13)
+irb(main):001:0> User.all
+  User Load (0.0ms)  SELECT "users".* FROM "users" 
+=> []
+irb(main):002:0> u = User.new(name: 'Michael Hartl', email: 'michael@example.com, password: 'foobar', password_confirmation: 'foobar')
+=> #<User id: nil, name: "Michael Hartl", email: "michael@example.com", created_at: nil, updated_at: nil, password_digest: "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbh...">
+irb(main):003:0> u.save
+  (0.0ms) begin transaction
+  User Exists (0.0ms) SELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('michael@example.com') LIMIT 1
+Binary data inserted for `string` type on column `password_digest`
+  SQL (31.2ms) INSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?)
+    [["created_at", Thu, 20 Jun 2013 16:44:45 UTC +00:00], ["email", "michael@example.com"], ["name", "Michael Hartl"], 
+    ["password_digest", "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbhtjbTepWQG"], ["updated_at", Thu, 20 Jun 2013 16:44:45 UTC +00:00]]
+  (0.0ms) commit transaction
+=> true
+irb(main):004:0> User.all
+  User Load (0.0ms) SELECT "users".* FROM "users"
+=> [#<User id: 1, name: "Michael Hartl", email: "michael@example.com", created_at: "2013-06-20 16:44:45", updated_at: "2013-06-20 16:44:45", password_digest: "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbh...">]
+irb(main):005:0> exit
+
+C:\Sites\rails_projects\sample_app>bundle exec rspec spec/ --no-color
+.......................FF.............
+
+Failures:
+
+  1) profile page
+     Failure/Error: let(:user) { FactoryGirl.create(:user) }
+     ActiveRecord::RecordInvalid:
+       Validation failed: Email has already been taken
+     # ./spec/requests/user_pages_spec.rb:14:in `block (2 levels) in <top (required)>'
+     # ./spec/requests/user_pages_spec.rb:15:in `block (2 levels) in <top (required)>'
+
+  2) profile page
+     Failure/Error: let(:user) { FactoryGirl.create(:user) }
+     ActiveRecord::RecordInvalid:
+       Validation failed: Email has already been taken
+     # ./spec/requests/user_pages_spec.rb:14:in `block (2 levels) in <top (required)>'
+     # ./spec/requests/user_pages_spec.rb:15:in `block (2 levels) in <top (required)>'
+
+Finished in 3.03 seconds
+38 examples, 2 failures
+
+Failed examples:
+
+rspec ./spec/requests/user_pages_spec.rb:17 # profile page
+rspec ./spec/requests/user_pages_spec.rb:18 # profile page
+
+Randomized with seed 26834
+
+
+C:\Sites\rails_projects\sample_app>rails c test
+Loading test environment (Rails 3.2.13)
+irb(main):001:0> u = User.find(1)
+  User Load (62.5ms) SELECT "users".* FROM "users" WHERE "user
+s"."id" = ? LIMIT 1 [["id", 1]]
+=> #<User id: 1, name: "Michael Hartl", email: "michael@example.com", created_at:"2013-06-20 16:44:45", updated_at: "2013-06-20 16:44:45", password_digest: "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbh...">
+irb(main):002:0> u.authenticate("foobar")
+=> #<User id: 1, name: "Michael Hartl", email: "michael@example.com", created_at:"2013-06-20 16:44:45", updated_at: "2013-06-20 16:44:45", password_digest: "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbh...">
+irb(main):003:0> u.destroy
+  (0.0ms) begin transaction
+  SQL (0.0ms) DELETE FROM "users" WHERE "users"."id" = ?[["id", 1]]
+  (0.0ms) commit transaction
+=> #<User id: 1, name: "Michael Hartl", email: "michael@example.com", created_at:"2013-06-20 16:44:45", updated_at: "2013-06-20 16:44:45", password_digest: "$2a$04$rZ6JHY0lQ19U.ZrXsdge5uGXZcM7x7DiepKbxcN..qbh...">
+irb(main):004:0> u = nil
+=> nil
+irb(main):005:0> User.all
+  User Load (0.0ms) SELECT "users".* FROM "users" 
+=> []
+irb(main):006:0> exit
+
+C:\Sites\rails_projects\sample_app>bundle exec rspec spec/ --no-color
+FF....................................
+
+Failures:
+
+  1) profile page
+     Failure/Error: it {should have_selector('h1', text: user.name) }
+       expected css "h1" with text "Michael Hartl" to return something
+     # ./spec/requests/user_pages_spec.rb:17:in `block (2 levels) in <top (required)>'
+
+  2) profile page
+     Failure/Error: it {should have_selector('title', text: user.name) }
+       expected css "title" with text "Michael Hartl" to return something
+     # ./spec/requests/user_pages_spec.rb:18:in `block (2 levels) in <top (required)>'
+
+Finished in 2.14 seconds
+38 examples, 2 failures
+
+Failed examples:
+
+rspec ./spec/requests/user_pages_spec.rb:17 # profile page
+rspec ./spec/requests/user_pages_spec.rb:18 # profile page
+
+Randomized with seed 64485
+
+
+C:\Sites\rails_projects\sample_app>
