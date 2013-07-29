@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -18,7 +18,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec','0.5.5'
   gem 'annotate', '~> 2.4.1.beta'
-  gem 'factory_girl_rails', '1.4.0'
+  gem 'factory_girl_rails', '1.4.0', :require => false
 end
 
 
